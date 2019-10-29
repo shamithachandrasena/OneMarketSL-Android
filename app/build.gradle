@@ -56,16 +56,10 @@ dependencies {
     def withoutStuff = {
         exclude group: 'org.hibernate', module: 'hibernate-search-orm'
         exclude group: 'org.springframework.security', module: 'spring-security-config'
-//        exclude group: 'com.fasterxml.jackson.datatype', module: 'jackson-datatype-hibernate5'
         exclude group: 'org.springframework', module: 'spring-orm'
         exclude group: 'org.springframework', module: 'spring-web'
-//        exclude group: 'org.springframework.android', module: 'spring-android-core'
-//        exclude group: 'org.springframework.android', module: 'spring-android-rest-template'
-
     }
     implementation 'com.samsl:ApiConnector:1.0-SNAPSHOT', withoutStuff
-    //    https://mvnrepository.com/artifact/org.springframework.android/spring-android-rest-template
-    //    compile group: 'org.springframework.android', name: 'spring-android-rest-template', version: '1.0.1.RELEASE'
     implementation 'com.google.android.gms:play-services-location:11.0.4'
 }
 
