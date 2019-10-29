@@ -37,6 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.samsl.onemarketsl.characters.User;
 import com.samsl.onemarketsl.items.Fruit;
@@ -53,7 +54,7 @@ import java.util.List;
 import config.android.Connector;
 
 
-public class OneMarketSL extends AppCompatActivity implements OnMapReadyCallback {
+public class OneMarketSL extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.OnInfoWindowLongClickListener {
     GoogleMap map;
     LocationManager locationManager;
     Location networkLocation;
@@ -77,6 +78,7 @@ public class OneMarketSL extends AppCompatActivity implements OnMapReadyCallback
             currentLocation.setLatitude(6.9664325);
             currentLocation.setLongitude(79.921921);
         }
+        map.setOnInfoWindowLongClickListener(this);
     }
 
     @Override
@@ -131,7 +133,7 @@ public class OneMarketSL extends AppCompatActivity implements OnMapReadyCallback
             }catch (Exception e){
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setTitle("OneMarketSL Error")
-                        .setMessage("System can't login into OneMarketSl Network.\nPlease check your internet connection")
+                        .setMessage("System can't login to OneMarketSL Network.\nPlease check your internet connection")
                         .setPositiveButton("Network Settings", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
@@ -188,28 +190,9 @@ public class OneMarketSL extends AppCompatActivity implements OnMapReadyCallback
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Please select the store to view details", Snackbar.LENGTH_LONG)
-                            .setAction("View Info", view1 -> {
-                                map.setOnMarkerClickListener(marker -> {try{
-                                    StoreDto storeInfo = Connector.Connect().getItemDetails((Integer) marker.getTag(),keyWord);
-                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                        showMessage("Store Details", Html.fromHtml("<b>"+"Fruits: "+storeInfo.getFruits().size()+"</b>"+getFruitString(storeInfo)+
-                                                        "<br><b>Vegetables: "+storeInfo.getVegetables().size()+"</b>"+ getVegetableString(storeInfo)+
-                                                        "<br><b>Hardware: "+storeInfo.getHardware().size()+"</b>"+getHardwareString(storeInfo)+
-                                                        "<br><b>Stationary: "+storeInfo.getStationary().size()+"</b>"+getStationaryString(storeInfo), Html.FROM_HTML_MODE_LEGACY)
-                                                ,"Close");
-                                    } else {
-                                        showMessage("Store Details", Html.fromHtml("<b>"+"Fruits: "+storeInfo.getFruits().size()+"</b>"+getFruitString(storeInfo)+
-                                                        "<br><b>Vegetables: "+storeInfo.getVegetables().size()+"</b>"+ getVegetableString(storeInfo)+
-                                                        "<br><b>Hardware: "+storeInfo.getHardware().size()+"</b>"+getHardwareString(storeInfo)+
-                                                        "<br><b>Stationary: "+storeInfo.getStationary().size()+"</b>"+getStationaryString(storeInfo))
-                                                ,"Close");
-                                    }
+                    Snackbar.make(view, "Please click and hold on store name to view details", Snackbar.LENGTH_LONG)
+                            .setAction("OK", view1 -> {
 
-                                }catch (Exception e){
-
-                                }return false;
-                                });
                             }).show();
                 }
             });
@@ -451,4 +434,27 @@ public class OneMarketSL extends AppCompatActivity implements OnMapReadyCallback
 
         }
     };
+
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+        try{
+            StoreDto storeInfo = Connector.Connect().getItemDetails((Integer) marker.getTag(),keyWord);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                showMessage("Store Details", Html.fromHtml("<b>"+"Fruits: "+storeInfo.getFruits().size()+"</b>"+getFruitString(storeInfo)+
+                                "<br><b>Vegetables: "+storeInfo.getVegetables().size()+"</b>"+ getVegetableString(storeInfo)+
+                                "<br><b>Hardware: "+storeInfo.getHardware().size()+"</b>"+getHardwareString(storeInfo)+
+                                "<br><b>Stationary: "+storeInfo.getStationary().size()+"</b>"+getStationaryString(storeInfo), Html.FROM_HTML_MODE_LEGACY)
+                        ,"Close");
+            } else {
+                showMessage("Store Details", Html.fromHtml("<b>"+"Fruits: "+storeInfo.getFruits().size()+"</b>"+getFruitString(storeInfo)+
+                                "<br><b>Vegetables: "+storeInfo.getVegetables().size()+"</b>"+ getVegetableString(storeInfo)+
+                                "<br><b>Hardware: "+storeInfo.getHardware().size()+"</b>"+getHardwareString(storeInfo)+
+                                "<br><b>Stationary: "+storeInfo.getStationary().size()+"</b>"+getStationaryString(storeInfo))
+                        ,"Close");
+            }
+
+        }catch (Exception e){
+
+        }
+    }
 }
