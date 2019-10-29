@@ -5,37 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<Button-->
-        <!--android:id="@+id/clickButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_margin="5dp"-->
-        <!--android:background="#359c5e"-->
-        <!--android:onClick="addOne"-->
-        <!--android:padding="8dp"-->
-        <!--android:text="Search"-->
-        <!--android:textColor="#ffffff" />-->
-
-    <fragment
-    android:id="@+id/map"
-    class="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentStart="true"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/searchText"
+        map:cameraBearing="0"
+        map:cameraTargetLat="6.9664325"
+        map:cameraTargetLng="79.921921"
+        map:cameraTilt="0"
+        map:cameraZoom="10" />
 
     <EditText
         android:id="@+id/searchText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/button"
-        android:layout_marginEnd="7dp"
+        android:layout_marginEnd="27dp"
         android:layout_toStartOf="@+id/button"
         android:ems="10"
         android:inputType="text"
-        android:text="Item" />
+        android:hint="What do you want?" />
 
     <Button
         android:id="@+id/button"
@@ -43,9 +35,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="23dp"
-        android:layout_marginTop="65dp"
-        android:text="Search" />
+        android:layout_marginEnd="27dp"
+        android:layout_marginTop="66dp"
+        android:text="Search"
+        android:textColor="#ffffff" />
+
+
+    <Button
+        android:id="@+id/locationControllerGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/button"
+        android:layout_below="@+id/searchText"
+        android:layout_marginTop="23dp"
+        android:onClick="toggleGPSUpdates"
+        android:text="@string/resume" />
+
 
 </RelativeLayout>
 
